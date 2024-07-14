@@ -19,17 +19,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center flex-col">
-    <div class="text-2xl font-bold">
-      Welcome to Crossfit App
+  <div>
+
+    <div class="flex justify-center items-center flex-col">
+      <div class="text-2xl font-bold">
+        Welcome to Crossfit App
+      </div>
     </div>
 
-    <div v-if="!coachStore.hasCoaches" class="flex justify-center flex-col items-center w-full">
-      <p class="text-xl ">
-        To get started click on the button below
-      </p>
-
-      <CoachNew />
+    <div v-if="!coachStore.hasCoaches" class="flex justify-center items-center flex-col">
+      <div class="flex justify-center flex-col items-center w-full">
+        <p class="text-xl ">
+          To get started click on the button below
+        </p>
+        <CoachNew />
+      </div>
     </div>
 
     <div v-else>
