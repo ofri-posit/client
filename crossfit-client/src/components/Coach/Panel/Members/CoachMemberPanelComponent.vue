@@ -19,8 +19,10 @@
 
             <div v-else v-for="member in memberStore.members" class="w-full lg:w-[20%] basic-info-card">
                 <p class="h-2 flex justify-between">
-                    <i @click="showEditModal(member)" class="info-card-button fas fa-pen"></i>
-                    <i @click="removeMember(member)" class="info-card-button fas fa-x"></i>
+                    <i @mouseenter="addHoverAnimation" @click="showEditModal(member)"
+                        class="info-card-button fas fa-pen"></i>
+                    <i @mouseenter="addHoverAnimation" @click="removeMember(member)"
+                        class="info-card-button fas fa-trash"></i>
                 </p>
                 <div class="basic-info-card-header">
                     <p>
@@ -33,7 +35,7 @@
                             Last workout
                         </div>
                         <div class="">
-                            {{ formatTime(member.last_workout_time) }}
+                            {{ new Date(member.last_workout_time).toLocaleString() }}
                         </div>
                     </div>
                     <p v-else>No workouts yet</p>
@@ -75,6 +77,15 @@ const props = defineProps({
     coach: Coach
 });
 
+const addHoverAnimation = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const className = "fa-bounce";
+    target.classList.add(className);
+    setTimeout(() => {
+        target.classList.remove(className);
+    }, 800);
+}
+
 
 const removeMember = (member: Member) => {
     membersService.removeMember(member.id)
@@ -94,10 +105,6 @@ const showEditModal = (member: Member) => {
 
 const closeEditModal = () => {
     showEditMemberModal.value = false;
-}
-
-const formatTime = (time: Date) => {
-    return new Date(time).toLocaleString();
 }
 
 onMounted(() => {
@@ -152,6 +159,5 @@ onMounted(() => {
 
 .info-card-button:hover {
     cursor: pointer;
-    transform: translateY(-2px);
 }
 </style>
