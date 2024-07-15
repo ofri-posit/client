@@ -4,7 +4,7 @@
             <div class="menu-base p-2 mt-3 flex flex-col h-full justify-between">
                 <div>
                     <div class="menu-title flex justify-center text-2xl font-bold mb-3">
-                        <p>Hello {{ coach?.name }}</p>
+                        <p>Welcome back {{ coach?.name }}</p>
                     </div>
                     <div class="menu-items flex flex-col p-3">
                         <div @click="applyPanel(0)" class="menu-item">
@@ -15,22 +15,32 @@
                             <i class="fas fa-users"></i>
                             Members
                         </div>
+                        <div @click="applyPanel(2)" class="menu-item">
+                            <i class="fa-solid fa-dumbbell"></i>
+                            Workouts
+                        </div>
                     </div>
                 </div>
                 <div class="settings-item p-3">
-                    <div @click="applyPanel(2)" class="menu-item">
+                    <div @click="applyPanel(3)" class="menu-item">
                         <i class="fas fa-gear"></i>
                         Settings
                     </div>
+
                 </div>
             </div>
         </div>
         <div class="seperator w-[0.3%] hidden lg:block"></div>
-        <div class="portal w-full lg:w-[70%] bg-green-500 flex-1">
+        <div class="portal w-full lg:w-[70%]  flex-1 p-6">
             <transition name="fade">
-                <div v-if="panels[0]" key="home">Home</div>
-                <div v-else-if="panels[1]" key="members">Members</div>
-                <div v-else-if="panels[2]" key="settings">Settings</div>
+                <div v-if="panels[0]" key="home">
+                    <CoachHomePanelComponent :coach="coach" />
+                </div>
+                <div v-else-if="panels[1]" key="members">
+                    <CoachMemberPanelComponent :coach="coach" />
+                </div>
+                <div v-else-if="panels[2]" key="workouts">Workouts</div>
+                <div v-else-if="panels[3]" key="settings">Settings</div>
                 <div v-else key="select">Select a panel</div>
             </transition>
         </div>
@@ -43,7 +53,11 @@ import { Coach } from '@/types/Coach';
 import { coachService } from '@/services/CoachService';
 import { onMounted, ref } from 'vue';
 
-const panels = ref([false, false, false]);
+
+import CoachHomePanelComponent from '@/components/Coach/Panel/Home/CoachHomePanelComponent.vue';
+import CoachMemberPanelComponent from '@/components/Coach/Panel/Members/CoachMemberPanelComponent.vue';
+
+const panels = ref([true, false, false, false]);
 
 const route = useRoute();
 
@@ -51,10 +65,8 @@ const coach = ref<Coach>();
 
 const applyPanel = (index: number) => {
     if (panels.value[index]) return;
-    console.log("Applying panel ", index);
     panels.value = panels.value.map(() => false);
     panels.value[index] = true;
-    console.log("Selected pane is ", panels);
 };
 
 onMounted(async () => {
@@ -69,6 +81,12 @@ onMounted(async () => {
 .menu {
     background: #ecdbd5;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.portal {
+    background: #dad2d2;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+
 }
 
 .seperator {
