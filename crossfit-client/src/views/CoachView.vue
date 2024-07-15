@@ -22,9 +22,9 @@
                     </div>
                 </div>
                 <div class="settings-item p-3">
-                    <div @click="applyPanel(3)" class="menu-item">
-                        <i class="fas fa-gear"></i>
-                        Settings
+                    <div @click="goBack" class="menu-item">
+                        <i class="fas fa-door-open"></i>
+                        Exit
                     </div>
 
                 </div>
@@ -39,8 +39,9 @@
                 <div v-else-if="panels[1]" key="members">
                     <CoachMemberPanelComponent :coach="coach" />
                 </div>
-                <div v-else-if="panels[2]" key="workouts">Workouts</div>
-                <div v-else-if="panels[3]" key="settings">Settings</div>
+                <div v-else-if="panels[2]" key="workouts">
+                    <CoachWorkoutPanelComponent :coach="coach" />
+                </div>
                 <div v-else key="select">Select a panel</div>
             </transition>
         </div>
@@ -56,8 +57,9 @@ import { onMounted, ref } from 'vue';
 
 import CoachHomePanelComponent from '@/components/Coach/Panel/Home/CoachHomePanelComponent.vue';
 import CoachMemberPanelComponent from '@/components/Coach/Panel/Members/CoachMemberPanelComponent.vue';
+import CoachWorkoutPanelComponent from '@/components/Coach/Panel/Workout/CoachWorkoutPanelComponent.vue';
 
-const panels = ref([true, false, false, false]);
+const panels = ref([true, false, false]);
 
 const route = useRoute();
 
@@ -67,6 +69,10 @@ const applyPanel = (index: number) => {
     if (panels.value[index]) return;
     panels.value = panels.value.map(() => false);
     panels.value[index] = true;
+};
+
+const goBack = () => {
+    window.history.back();
 };
 
 onMounted(async () => {
