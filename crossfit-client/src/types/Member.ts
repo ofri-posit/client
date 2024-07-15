@@ -12,6 +12,10 @@ export class Member {
 
     }
 
+    staticGetFormattedLastWorkoutTime(): string {
+        return this.last_workout_time.toLocaleDateString() + " " + this.last_workout_time.toLocaleTimeString();
+    }
+
 
 
 

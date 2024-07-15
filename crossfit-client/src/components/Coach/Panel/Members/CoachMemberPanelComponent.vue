@@ -19,7 +19,7 @@
 
             <div v-else v-for="member in memberStore.members" class="w-full lg:w-[20%] basic-info-card">
                 <p class="h-2 flex justify-between">
-                    <i class="info-card-button fas fa-pen"></i>
+                    <i @click="showEditModal(member)" class="info-card-button fas fa-pen"></i>
                     <i @click="removeMember(member)" class="info-card-button fas fa-x"></i>
                 </p>
                 <div class="basic-info-card-header">
@@ -27,8 +27,15 @@
                         {{ member.name }}
                     </p>
                 </div>
-                <div class="basic-info-card-body text-center text-sm">
-                    <p v-if="member.last_workout_time">Last workout: {{ member.last_workout_time }}</p>
+                <div class="basic-info-card-body text-sm">
+                    <div v-if="member.last_workout_time">
+                        <div class="">
+                            Last workout
+                        </div>
+                        <div class="">
+                            {{ formatTime(member.last_workout_time) }}
+                        </div>
+                    </div>
                     <p v-else>No workouts yet</p>
                 </div>
             </div>
@@ -38,6 +45,10 @@
 
         <MemberNewComponent :showNewMemberModal="showNewMemberModal" :coachId="coach?.id"
             @close-modal="showNewMemberModal = false" />
+
+        <MemberEditComponent :show-edit-member-modal="showEditMemberModal" :selected-member="selectedMember"
+            @close-modal="closeEditModal" />
+
     </div>
 </template>
 
@@ -48,12 +59,17 @@ import { membersService } from "@/services/MemberService";
 import { useMemberStore } from "@/stores/memberStore";
 import { useToast } from "vue-toastification";
 import MemberNewComponent from './MemberNewComponent.vue';
+import MemberEditComponent from './MemberEditComponent.vue';
 import type { Member } from '@/types/Member';
 
 const memberStore = useMemberStore();
 const toast = useToast();
 
 const showNewMemberModal = ref(false);
+const showEditMemberModal = ref(false);
+
+
+const selectedMember = ref<Member>();
 
 const props = defineProps({
     coach: Coach
@@ -68,6 +84,20 @@ const removeMember = (member: Member) => {
         }).catch((error) => {
             toast.error("Failed to remove member");
         });
+}
+
+
+const showEditModal = (member: Member) => {
+    selectedMember.value = member;
+    showEditMemberModal.value = true;
+}
+
+const closeEditModal = () => {
+    showEditMemberModal.value = false;
+}
+
+const formatTime = (time: Date) => {
+    return new Date(time).toLocaleString();
 }
 
 onMounted(() => {

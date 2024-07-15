@@ -38,4 +38,15 @@ export const membersService = {
             throw error;
         }
     },
+
+    //EditMember
+    async editMember(member: Member): Promise<Member> {
+        try {
+            const response = await axios.put<Member>(`${API_URL}/members/${member.id}`, member);
+            return response.data;
+        } catch (error) {
+            console.error('Error editing client:', error);
+            throw error;
+        }
+    },
 }
