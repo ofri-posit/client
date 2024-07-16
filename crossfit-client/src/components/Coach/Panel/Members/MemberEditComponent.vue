@@ -50,7 +50,7 @@ const edittedMember = ref<Member>({
     id: props.selectedMember?.id || 0,
     name: props.selectedMember?.name || '',
     email: props.selectedMember?.email || '',
-    last_workout_time: props.selectedMember?.last_workout_time || new Date()
+
 
 
 });
@@ -78,7 +78,7 @@ const editMember = async () => {
         toast.error('Invalid email');
         return;
     }
-    edittedMember.value.last_workout_time = new Date();
+    edittedMember.value.last_workout_time = props.selectedMember?.last_workout_time;
     try {
         const response = await membersService.editMember(edittedMember.value);
         replaceMember(response);

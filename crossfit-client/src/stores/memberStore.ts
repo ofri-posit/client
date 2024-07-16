@@ -19,6 +19,11 @@ export const useMemberStore = defineStore('member', () => {
         return computed(() => members.value.find(member => member.id === id))
     }
 
+    const updateMember = (member: Member) => {
+        const index = members.value.findIndex(m => m.id === member.id)
+        members.value[index] = member
+    }
+
     const setMembers = (newMembers: Member[]) => {
         members.value = newMembers
     }
@@ -36,6 +41,7 @@ export const useMemberStore = defineStore('member', () => {
         addMember,
         removeMember,
         getMemberById,
+        updateMember,
         setMembers,
         getDisplayString
     }

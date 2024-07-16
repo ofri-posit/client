@@ -19,8 +19,18 @@ export const useWorkoutStore = defineStore('workout', () => {
     }
 
     const removeWorkout = (workout: Workout) => {
-        workouts.value.splice(workouts.value.indexOf(workout), 1)
-        monthlyWorkouts.value.splice(monthlyWorkouts.value.indexOf(workout), 1)
+        // //Remove the workout from the workouts array
+        // const index = workouts.value.indexOf(workout)
+        // if (index > -1) {
+        //     workouts.value.splice(index, 1)
+        // }
+
+        // //Remove the workout from the monthlyWorkouts array
+        // const monthlyIndex = monthlyWorkouts.value.indexOf(workout)
+        // if (monthlyIndex > -1) {
+        //     monthlyWorkouts.value.splice(monthlyIndex, 1)
+        // }
+
     }
 
 

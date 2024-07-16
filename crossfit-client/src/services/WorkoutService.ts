@@ -27,7 +27,7 @@ export const workoutService = {
     },
 
     //AddWorkout
-    async addWorkout(workout: Workout): Promise<Workout> {
+    async addWorkout(workout: Object): Promise<Workout> {
         try {
             const response = await axios.post(`${API_URL}/workouts`, workout);
             return response.data;
@@ -35,7 +35,29 @@ export const workoutService = {
             console.error('Error adding workout:', error);
             throw error;
         }
-    }
+    },
+
+    //GetWorkoutSessionsByWorkoutIdAndCoachId
+    async getWorkoutSessionsByWorkoutIdAndCoachId(coachId: number, workoutId: number): Promise<Workout[]> {
+        try {
+            const response = await axios.get<Workout[]>(`${API_URL}/workout_sessions?coach_id=${coachId}&workout_id=${workoutId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching workout sessions:', error);
+            throw error;
+        }
+    },
+
+    //addWorkoutSessions workout.id,coach.id,members[]
+    async addWorkoutSession(workoutId: number, coachId: number, member: number): Promise<Workout[]> {
+        try {
+            const response = await axios.post(`${API_URL}/workout_sessions`, { workout_id: workoutId, member_id: member, coach_id: coachId });
+            return response.data;
+        } catch (error) {
+            console.error('Error adding workout sessions:', error);
+            throw error;
+        }
+    },
 
 
 }

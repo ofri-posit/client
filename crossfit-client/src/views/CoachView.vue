@@ -53,11 +53,18 @@ import { useRoute } from 'vue-router';
 import { Coach } from '@/types/Coach';
 import { coachService } from '@/services/CoachService';
 import { onMounted, ref } from 'vue';
+import { useMemberStore } from "@/stores/memberStore";
+import { membersService } from '@/services/MemberService';
+import { useToast } from "vue-toastification";
+
 
 
 import CoachHomePanelComponent from '@/components/Coach/Panel/Home/CoachHomePanelComponent.vue';
 import CoachMemberPanelComponent from '@/components/Coach/Panel/Members/CoachMemberPanelComponent.vue';
 import CoachWorkoutPanelComponent from '@/components/Coach/Panel/Workout/CoachWorkoutPanelComponent.vue';
+
+const toast = useToast();
+const memberStore = useMemberStore();
 
 const panels = ref([true, false, false]);
 
@@ -79,6 +86,13 @@ onMounted(async () => {
     const coachId = route.params.id;
     const response = await coachService.getCoach(Number(coachId));
     coach.value = response;
+    membersService.getMembersByCoachId(coach.value?.id)
+        .then((members) => {
+            memberStore.setMembers(members)
+
+        }).catch((error) => {
+            toast.error("Failed to load members");
+        });
     console.log(`Coach: ${JSON.stringify(coach.value)}`);
 });
 </script>

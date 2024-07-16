@@ -5,7 +5,8 @@
                 <Calander @date-selected="onDateSelected" />
             </div>
             <div class="c w-full lg:w-[40%]">
-                <WorkoutList @remove-selected-day="onDateSelected('')" :selected-day="selectedDay" />
+                <WorkoutList @remove-selected-day="onDateSelected('')" :selected-day="selectedDay"
+                    :coach_id="coach?.id" />
             </div>
         </div>
     </div>
